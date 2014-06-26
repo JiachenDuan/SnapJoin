@@ -1,0 +1,26 @@
+@(users: List[User], userForm: Form[User])
+
+@import helper._
+
+@main("User list") {
+    <script src='@routes.Assets.at("javascripts/user.js")'></script>
+    <h1>@users.size() user(s) </h1>
+    <ul>
+    @for(user <- users) {
+        <li>
+            @user.username
+            @user.password
+            @user.createdTime
+            <ul id="photos"></ul>
+        </li>
+    }
+    </ul>
+    <h2>Add new User</h2>
+    @form(routes.UserController.createUser
+    ()) {
+        @inputText(userForm("username"))
+        @inputPassword(userForm("password"))
+
+        <input type="submit" value="Create">
+    }
+}

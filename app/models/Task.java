@@ -16,6 +16,8 @@ public class Task{
   public String id;
 
   public String label;
+  public String name;
+  public String password;
 
   private static JacksonDBCollection<Task, String> coll = MongoDB.getCollection("tasks", Task.class, String.class);
 

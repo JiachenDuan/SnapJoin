@@ -3,11 +3,23 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /                                                         controllers.Application.index()
+GET         /assets/*file                                             controllers.Assets.at(path="/public", file)
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /tasks                  controllers.Application.tasks()
-POST    /tasks                  controllers.Application.newTask()
-POST    /tasks/:id/delete       controllers.Application.deleteTask(id: String)
+GET         /tasks                                                    controllers.Application.tasks()
+GET         /taskjson                                                 controllers.Application.taskjson()
+POST        /tasks                                                    controllers.Application.newTask()
+POST        /tasks/:id/delete                                         controllers.Application.deleteTask(id: String)
+#User
+GET         /users                                                    controllers.UserController.FindAllUsers()
+POST        /users                                                    controllers.UserController.createUser()
+GET         /userbyid                                                 controllers.UserController.findUserById()
+#GET         /users
+##
+GET         /usersjson/:username/:password/:thumbUrl/:photoUrl        controllers.Application.newUserRestGet(username,password, thumbUrl,photoUrl)
+POST        /usersjson                                                controllers.Application.newUserRest()
+POST        /sayhello                                                 controllers.Application.sayhello()
+GET         /photos                                                   controllers.Application.getPhoto()
+GET         /userjson                                                 controllers.Application.userjson()
