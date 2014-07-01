@@ -1,13 +1,16 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.User;
+import play.api.libs.json.JsPath;
 import play.data.Form;
 import play.data.validation.Constraints;
 import play.libs.F;
 import play.libs.Json;
 import play.mvc.*;
 
+import static play.mvc.Controller.request;
 import static play.mvc.Controller.response;
 
 public class SecurityController extends Action.Simple {
@@ -34,6 +37,12 @@ public class SecurityController extends Action.Simple {
         return (User) Http.Context.current().args.get("user");
     }
 
+    /**
+     * Login method for web page
+     * @param email
+     * @param password
+     * @return
+     */
     // returns an authToken
     public static Result login(String email, String password) {
 //        Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
@@ -59,10 +68,39 @@ public class SecurityController extends Action.Simple {
         }
     }
 
+    /**
+     * Login method for Android
+     * @return
+     */
+    @BodyParser.Of(play.mvc.BodyParser.Json.class)
+    public static Result login() {
+       JsonNode json = request().body().asJson();
+        String password = json.findPath("password").textValue();
+        String email = json.findPath("email").textValue();
+        if(password == null || email == null) {
+            return badRequest("ERROR:UI did not pass Email and password correctly");
+        }
+        User user = User.findByEmailAddressAndPassword(email, password);
+
+        if (user == null) {
+            return unauthorized();
+        } else {
+            String authToken = user.createToken();
+            User updatedUser = User.updateAuthToken(user,authToken);
+            ObjectNode authTokenJson = Json.newObject();
+            authTokenJson.put(AUTH_TOKEN, authToken);
+            response().setCookie(AUTH_TOKEN, authToken);
+            return ok(authTokenJson);
+        }
+    }
+
     @With(SecurityController.class)
     public static Result logout() {
         response().discardCookie(AUTH_TOKEN);
-        getUser().deleteAuthToken();
+        User loginUser = getUser();
+        loginUser.deleteAuthToken();
+        //remove authToken of user in db
+        User.updateAuthToken(loginUser,"");
         return redirect("/");
     }
 

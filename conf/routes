@@ -13,7 +13,8 @@ GET         /taskjson                                                 controller
 POST        /tasks                                                    controllers.Application.newTask()
 POST        /tasks/:id/delete                                         controllers.Application.deleteTask(id: String)
 #Login
-GET         /:email/:password/login                                   controllers.SecurityController.login(email:String,password:String)
+POST         /login                                                   controllers.SecurityController.login()
+
 #User
 GET         /users/all                                                controllers.UserController.FindAllUsers()
 GET         /users/:email/:password/byemailandpassword                controllers.UserController.FindByEmailAndPassword(email:String,password:String)

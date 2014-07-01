@@ -24,4 +24,14 @@ public class ApplicationTest {
         });
     }
 
+    @Test
+    public void testFindAllUsers() {
+        running(fakeApplication(), new Runnable() {
+            @Override
+            public void run() {
+                Result result = route(fakeRequest("GET", "/users/all"));
+
+            }
+        });
+    }
 }

@@ -139,6 +139,7 @@ public class User {
 
     public static User updateAuthToken(User user, String authToken) {
         WriteResult<User, String> updatedUser = coll.updateById(user.id, DBUpdate.set("authToken", authToken));
-        return updatedUser.getSavedObject();
+        User newuser = findById(user.id);
+        return newuser;
     }
 }

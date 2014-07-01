@@ -73,6 +73,22 @@ public class UserController extends Controller {
 
 
     @BodyParser.Of(play.mvc.BodyParser.Json.class)
+    public static Result Login() {
+        JsonNode json = request().body().asJson();
+        String password = json.findPath("password").textValue();
+        String email = json.findPath("email").textValue();
+        if(password == null || email == null) {
+            return badRequest("ERROR:UI did not pass Email and password correctly");
+        }
+
+        User user = User.findByEmailAddressAndPassword(email,password);
+        if(user==null){
+            return badRequest("ERROR:Email and password not valid");
+        }
+        return ok(toJson(user));
+    }
+
+    @BodyParser.Of(play.mvc.BodyParser.Json.class)
     public static Result FindByEmailAndPassword(String email,String password) {
         User user = User.findByEmailAddressAndPassword(email,password);
                 if(user==null){
