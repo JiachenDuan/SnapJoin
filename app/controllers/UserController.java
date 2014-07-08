@@ -18,8 +18,6 @@ import static play.libs.Json.toJson;
  * Created by jiachen on 6/24/14.
  */
 public class UserController extends Controller {
-
-
     /**
      * #############REST Webservice Methods################
      */
@@ -62,7 +60,7 @@ public class UserController extends Controller {
         }
     }
 
-    @With(SecurityController.class)
+  //  @With(SecurityController.class)
     @BodyParser.Of(play.mvc.BodyParser.Json.class)
     public static Result FindAllUsers() {
         JsonNode json = request().body().asJson();
