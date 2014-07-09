@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * The Comment will be selected by EventId, and display it by the order of createTime
  * Created by jiachen on 7/6/14.
  */
 public class Comment {
@@ -19,9 +20,12 @@ public class Comment {
     @ObjectId
     public String id;
     public String contents;
-    @Constraints.Required
-    public String ownnerid;
+    //Here is only the owner name, not the Id, at this point, the user does
+    // have to be registered.
+    public String ownerName;
     public Date creationTime;
+    @ObjectId
+    public String eventId;
 
     public Comment() {
         this.creationTime = new Date();
@@ -31,10 +35,10 @@ public class Comment {
         return Comment.coll.save(comment);
     }
 
-    public static Comment findByOwnnerId(String eventHostId) {
-        if (eventHostId == null) return null;
+    public static Comment findByEventId(String eventId) {
+        if (eventId == null) return null;
         try{
-            List<Comment> comments = coll.find().in("ownnerid",eventHostId).toArray();
+            List<Comment> comments = coll.find().in("eventId",eventId).toArray();
             if(comments == null || comments.size() == 0){
                 return null;
             }else{

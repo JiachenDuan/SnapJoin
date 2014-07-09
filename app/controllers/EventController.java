@@ -2,13 +2,17 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Event;
 import models.EventHost;
+import play.Logger;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 import scala.util.parsing.json.JSONObject;
+
 import static play.libs.Json.toJson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +22,19 @@ import java.util.List;
 public class EventController extends Controller {
 
     /**
+     * ------Comment----------
+     */
+
+
+    /**
      * -------EVENT HOST---------
+     */
+
+    /**
+     * NOTES: front end JSON object has contains exactly same attibute name
+     * as the method defined, e.g. for createEventHost method,
+     * JSON object has to have "hostname" and "email" attribute
+     * @return
      */
     @BodyParser.Of(play.mvc.BodyParser.Json.class)
     public static Result createEventHost() {
@@ -56,13 +72,13 @@ public class EventController extends Controller {
     public static Result removeEventHostById() {
         JsonNode json = request().body().asJson();
         String evenhostid = json.findPath("evenhostid").textValue();
-        if(evenhostid == null){
+        if (evenhostid == null) {
             return badRequest("ERROR: User with user id: " + evenhostid + " does not exist");
         }
-        try{
+        try {
 
             EventHost.removeById(evenhostid);
-        }catch(Exception e){
+        } catch (Exception e) {
             return badRequest("ERROR: Invalid user id");
         }
         ObjectNode result = Json.newObject();
@@ -70,29 +86,61 @@ public class EventController extends Controller {
         result.put("removedeventhostid", evenhostid);
         return ok(result);
     }
+
     /**
      * -------- EVENT----------
      */
+    @BodyParser.Of(play.mvc.BodyParser.Json.class)
+    public static Result closeEvent() {
+        JsonNode json = request().body().asJson();
+        String eventid = json.findPath("eventid").textValue();
+        if(eventid == null) return badRequest("Invalid eventId json");
+        Event event = Event.findById(eventid);
+        Logger.debug("start closing event %s",eventid);
+        if(event == null) return badRequest("event $s not found",eventid);
+        Event.closeEvent(event);
+        ObjectNode result = Json.newObject();
+        //REST Cient will look for json node name "eventhostid"
+        result.put("eventid", eventid);
+        Logger.debug("event %s is closed",eventid);
+        return ok(toJson(result));
+    }
+
     @BodyParser.Of(play.mvc.BodyParser.Json.class)
     public static Result createEvent() {
         JsonNode json = request().body().asJson();
         String title = json.findPath("title").textValue();
         String location = json.findPath("location").textValue();
         String detail = json.findPath("detail").textValue();
+        String creatorId = json.findPath("creatorid").textValue() ;
+        Event event = new Event();
+        event.detail = detail;
+        event.title = title;
+        event.location = location;
+        event.creatorId = creatorId;
 
-        List<String> scheduleOptionIds = json.findValuesAsText("scheduleOptions");
-        List<String> commentIds = json.findValuesAsText("comments");
-
-        if (title == null || detail == null || scheduleOptionIds == null || commentIds == null) {
+        if (title == null || detail == null) {
             return badRequest("Invalid Json Data");
         }
         /**
          * Duplicate event name is fine
          */
-        // TODO: not done yet, will come back after finish eventHost class
-//       String evenId = Event.create()
-        return null;
-    }
 
+        String createdEventId = Event.create(event).getSavedId();
+        ObjectNode result = Json.newObject();
+        //REST Cient will look for json node name "eventhostid"
+        result.put("createEventId", createdEventId);
+        return ok(toJson(result));
+    }
+    @BodyParser.Of(play.mvc.BodyParser.Json.class)
+    public static Result eventsByCreator(String id) {
+
+        List<Event> events = Event.eventsByCreatorId(id);
+        if(events == null || events.isEmpty()){
+            return badRequest("Did not find event for creator " + id);
+        }
+
+       return ok(toJson(events));
+    }
 
 }

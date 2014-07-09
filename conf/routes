@@ -8,17 +8,22 @@ GET         /assets/*file                                             controller
 
 
 # Map static resources from the /public folder to the /assets URL path
-
+#Event
+POST        /events                                                   controllers.EventController.createEvent()
+POST        /events/close                                             controllers.EventController.closeEvent()
+GET         /events/creator/:id                                       controllers.EventController.eventsByCreator(id:String)
+#Comment
 #EventHost
-POST        /createeventhost                                               controllers.EventController.createEventHost()
-POST        /removeeventhostbyid                                           controllers.EventController.removeEventHostById()
+POST        /eventhosts                                               controllers.EventController.createEventHost()
+POST        /eventhosts/remove                                        controllers.EventController.removeEventHostById()
+
 #Task
 GET         /tasks                                                    controllers.Application.tasks()
 GET         /taskjson                                                 controllers.Application.taskjson()
 POST        /tasks                                                    controllers.Application.newTask()
 POST        /tasks/:id/delete                                         controllers.Application.deleteTask(id: String)
 #Login
-POST         /login                                                   controllers.SecurityController.login()
+POST        /login                                                    controllers.SecurityController.login()
 
 #User
 GET         /users/all                                                controllers.UserController.FindAllUsers()
