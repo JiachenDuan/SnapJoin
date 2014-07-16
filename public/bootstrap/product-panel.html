@@ -1,0 +1,44 @@
+<section >
+	<ul class="nav nav-pills">
+	<!-- assign a value to tab, tag equals 1 when click on the tab one -->
+	<!-- NOTES: when ng-click changes the value of tab...
+	..the {{tab}} expression automatically gets updated! 
+	Expressions define a 2-way Data Binding...
+	this means Expressions are re-evaluated when a property changes -->
+	<!-- ng-class directive -->
+		<li ng-class="{active:panel.isSelected(1)}">
+			<a href ng-click="panel.selectTab(1)">Description</a>
+		</li>
+		<li ng-class="{active:panel.isSelected(2)}">
+			<a href ng-click="panel.selectTab(2)">Specification</a>
+		</li>
+		<li ng-class="{active:panel.isSelected(3)}">
+			<a href ng-click="panel.selectTab(3)">Reviews</a>
+		</li>
+	</ul>
+
+	<!-- {{tab}}   -->
+	<div class="panel" ng-show="panel.isSelected(1)">
+      <h4>Description</h4>
+      <p>{{product.description}}</p>
+	</div>
+	<div class="panel" ng-show="panel.isSelected(2)">
+      <h4>Specifications</h4>
+      <blockquote>None yet</blockquote>
+	</div>
+	<div class="panel" ng-show="panel.isSelected(3)">
+      <h4>Reviews</h4>
+      <blockquote ng-repeat="review in product.reviews">
+      	<b>Stars: {{review.stars}}</b>
+      	{{review.body}}
+      	<cite>by: {{review.author}} on {{review.createdOn | date:'MM/dd/yyyy @ h:mma'}}</cite>
+      </blockquote>
+
+      <!-- Add ng-submit to triger reviewCtrl.addReview function -->
+      <!-- Validation: 1) novalidate: turn off default HTML 
+                       2) add reviewForm.$valid && to ng-submit, to submit only when the reviewForm is valid 
+                       3) add different color in cssto 'ng-pristine ng-invali' to let show user invalid field at runtime -->
+      <product-review-form ></product-review-form>
+	</div>
+	<!-- FOr  -->
+</section>

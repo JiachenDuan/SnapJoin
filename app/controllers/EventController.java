@@ -3,17 +3,18 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Event;
-import models.EventHost;
+import models.Participant;
+import models.ScheduleOption;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
-import scala.util.parsing.json.JSONObject;
+import scala.util.parsing.json.JSONArray;
 
+import static play.libs.Json.fromJson;
 import static play.libs.Json.toJson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,68 +23,86 @@ import java.util.List;
 public class EventController extends Controller {
 
     /**
-     * ------Comment----------
+     * -------ScheduleOptions----------
      */
+    /**
+     * Will create multiple schedule options at once,
+     * will pass a jsonArray of scheduleOptions as default,
+     * if this is only one scheduleoptin, just put one item inside the jsonArray
+     * @return
+     */
+//    @BodyParser.Of(play.mvc.BodyParser.Json.class)
+//    public static Result createScheduleOptions() {
+//     JsonNode json = request().body().asJson();
+////        List<ScheduleOption> options = json.find
+////        List<JsonNode> options = json.("scheduleoptions");
+//       // List<ScheduleOption> options = fromJson(json.findValues("scheduleoptions"), List<ScheduleOption>);
+//     if(options ==null) return badRequest("Invalid Scheduleoptions Json Data");
+//
+//
+//
+//        return null;
+//    }
 
 
     /**
-     * -------EVENT HOST---------
+     * -------Participant---------
      */
 
     /**
      * NOTES: front end JSON object has contains exactly same attibute name
-     * as the method defined, e.g. for createEventHost method,
-     * JSON object has to have "hostname" and "email" attribute
+     * as the method defined, e.g. for createparticipant method,
+     * JSON object has to have "name" and "email" attribute
      * @return
      */
     @BodyParser.Of(play.mvc.BodyParser.Json.class)
-    public static Result createEventHost() {
+    public static Result createParticipant() {
         JsonNode json = request().body().asJson();
-        String hostname = json.findPath("hostname").textValue();
+        String participantName = json.findPath("name").textValue();
         String email = json.findPath("email").textValue();
-        EventHost evenHost = new EventHost();
-        evenHost.hostname = hostname;
-        evenHost.email = email;
+        Participant participant = new Participant();
+        participant.name = participantName;
+        participant.email = email;
 
-        String evenHostId = "";
-        if (hostname == null || email == null) {
+        String participantId = "";
+        if (participantName == null || email == null) {
             return badRequest("Invalid Json Data");
         } else {
-            //Check if the email already existed, if so update the new hostname
+            //Check if the email already existed, if so update the new name
             //otherwise, just create the new one
 
-            EventHost checkEventHost = EventHost.findByEmail(email);
-            if (checkEventHost != null) {
-                EventHost.updateHostName(checkEventHost, hostname);
-                evenHostId = checkEventHost.id;
+            Participant checkParticipant = Participant.findByEmail(email);
+            if (checkParticipant != null) {
+                Participant.updateParticipantName(checkParticipant, participantName);
+                participantId = checkParticipant.id;
             } else {
-                evenHostId = EventHost.create(evenHost).getSavedId();
+                participantId = Participant.create(participant).getSavedId();
 
             }
         }
         ObjectNode result = Json.newObject();
-        //REST Cient will look for json node name "eventhostid"
-        result.put("eventhostid", evenHostId);
+        //REST Cient will look for json node name "participantid"
+        result.put("participantid", participantId);
         return ok(result);
 
     }
 
     @BodyParser.Of(play.mvc.BodyParser.Json.class)
-    public static Result removeEventHostById() {
+    public static Result removeParticipantById() {
         JsonNode json = request().body().asJson();
-        String evenhostid = json.findPath("evenhostid").textValue();
-        if (evenhostid == null) {
-            return badRequest("ERROR: User with user id: " + evenhostid + " does not exist");
+        String participantid = json.findPath("participantid").textValue();
+        if (participantid == null) {
+            return badRequest("ERROR: User with user id: " + participantid + " does not exist");
         }
         try {
 
-            EventHost.removeById(evenhostid);
+            Participant.removeById(participantid);
         } catch (Exception e) {
             return badRequest("ERROR: Invalid user id");
         }
         ObjectNode result = Json.newObject();
-        //REST Cient will look for json node name "eventhostid"
-        result.put("removedeventhostid", evenhostid);
+        //REST Cient will look for json node name "participantid"
+        result.put("removedparticipantid", participantid);
         return ok(result);
     }
 
@@ -100,7 +119,7 @@ public class EventController extends Controller {
         if(event == null) return badRequest("event $s not found",eventid);
         Event.closeEvent(event);
         ObjectNode result = Json.newObject();
-        //REST Cient will look for json node name "eventhostid"
+        //REST Cient will look for json node name "participantid"
         result.put("eventid", eventid);
         Logger.debug("event %s is closed",eventid);
         return ok(toJson(result));
@@ -128,7 +147,7 @@ public class EventController extends Controller {
 
         String createdEventId = Event.create(event).getSavedId();
         ObjectNode result = Json.newObject();
-        //REST Cient will look for json node name "eventhostid"
+        //REST Cient will look for json node name "participantid"
         result.put("createEventId", createdEventId);
         return ok(toJson(result));
     }

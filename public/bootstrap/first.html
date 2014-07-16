@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- ng-app - attach the Application Module to the page -->
+<html ng-app="store">
+  <head>
+    <title>Bootstrap 101 Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="css/app.css" rel="stylesheet" type="text/css" media="screen">
+
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js" ></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/products.js"></script>
+
+  </head>
+  <!-- ng-controller: attach a Controller function to the page -->
+  <body ng-controller="StoreController as store">
+
+  <ul class="list-group" ng-controller="GalleryController as gallery">
+	<li class="list-group-item" ng-repeat="product in store.products | orderBy:'-price' " >
+	
+	
+	<!-- NOTE: Template: If we reuse the following code to display our item price
+	we can move it to another HTML file as template -->
+	<!-- {{product.name}}
+	<em class="pull-right"> {{product.price | currency }}</em> -->
+	<!-- ng-include is expecting a variable with the name of the file to include. To pass the name directly as string. use single quotes ('...') -->
+	<!-- Custom Directives : good expressness 
+		1) Template-expanding Directives are the simplest:
+			-define a custom tag or attribute that is expanded or replaced
+			-can include Controller logic, if needed
+		2) Directives can also be used for:
+			-Expressing comples UI
+			-Calling events and registering event handlers
+			-Reusing common components
+		-->
+
+   
+    <!-- <h3 ng-include="'product-title.html"> -->
+    <h3 >
+     <product-title></product-title> <!-- NOTES: some browser don't like self-closing tags -->
+	<!-- format data string from JSON!!, other filter like
+	 | uppercase or | limitTo:8 or | limitTo:3 in ng-repeat or | orderBy:'-price' -->
+<!-- 	<p>{{product.recipe | date:'MM/dd/yyyy @ h:mma'}}</p>
+	<img ng-src="{{product.images[gallery.current].full}}" ng-click="gallery.setCurrent(0)"/> -->
+	</h3>
+	<!-- NOTES: better move logic into a controller not on HTML -->
+	<!-- <section ng-init="tab = 1" ng-controller="PanelController as panel"> -->
+	<product-panel></product-panel>
+	</li>
+</ul>
+
+
+<!-- Code below is only for notes -->
+<div ng-show="false">
+<section>
+	<ul class="nav nav-pills">
+	<!-- assign a value to tab, tag equals 1 when click on the tab one -->
+	<!-- NOTES: when ng-click changes the value of tab...
+	..the {{tab}} expression automatically gets updated! 
+	Expressions define a 2-way Data Binding...
+	this means Expressions are re-evaluated when a property changes -->
+	<li><a href ng-click="tab = 1">Description</a></li>
+	<li><a href ng-click="tab = 2">Specification</a></li>
+	<li><a href ng-click="tab = 3">Reviews</a></li>
+	</ul>
+	<!-- {{tab}}   -->
+	<div class="panel" ng-show="tab ===1">
+      <h4>Description</h4>
+      <p>{{product.description}}</p>
+	</div>
+	<div class="panel" ng-show="tab ===2">
+      <h4>Specifications</h4>
+      <blockquote>None yet</blockquote>
+	</div>
+	<div class="panel" ng-show="tab ===3">
+      <h4>Reviews</h4>
+      <blockquote>None yet</blockquote>
+	</div>
+	<!-- Need to create tap content panels -->
+</section>
+
+  <!-- Notes: we can only access store within the body -->
+  <!-- <div ng-show="!store.product.soldOut"> -->
+  <!-- ng-repeat:repeat a section for each item in an array -->
+    <div ng-repeat="product in store.products" ng-hide="product.soldOut">
+    
+    	<h1>{{product.name}}</h1>
+    	<!-- add Filter: currency to add dollar sigh after price -->
+    	<h2>{{product.price | currency}}</h2>
+    	<p>{{product.description}}</p>
+    	<!-- ng-show/ng-hide: display a section based on an Expression -->
+    	<!-- only show button when canPurshase is true, it will be show if it does not exist -->
+    	<button ng-show="product.canPurchase">Add to Cart</button>
+    </div>
+     </div>
+  </body>
+</html>

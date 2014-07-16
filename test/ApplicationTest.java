@@ -1,14 +1,13 @@
 import com.fasterxml.jackson.databind.JsonNode;
-import models.Comment;
 import models.Event;
-import models.EventHost;
+import models.Participant;
+import models.ScheduleOption;
 import org.junit.Test;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Result;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.*;
@@ -24,6 +23,147 @@ public class ApplicationTest {
 
 private static final String CONTENT_TYPE = "application/json";
 
+    /**
+     * ScheduleOption
+     */
+
+    public void testCreatScheduleOption(){
+        running(fakeApplication(), new Runnable() {
+            @Override
+            public void run() {
+
+                String eventId = "53c447d044aefb07bed0d394";
+                ScheduleOption scheduleOption1 = new ScheduleOption(eventId);
+                String t1 = "Finishing in Half moon bay";
+                scheduleOption1.title = t1;
+                String d1 = "We will car pool to Half moon bay in the morning";
+                scheduleOption1.detail = d1;
+                scheduleOption1.scheduleTime = new Date();
+                ScheduleOption scheduleOption2 = new ScheduleOption(eventId);
+                String t2 = "Hiking in SF";
+                scheduleOption2.title = t2;
+                String d2 = "We will start from Our church, and go to SF golden Gate park";
+                scheduleOption2.detail= d2;
+                scheduleOption2.scheduleTime = new Date();
+                List<ScheduleOption> options  = new ArrayList<ScheduleOption>();
+                options.add(scheduleOption1);
+                options.add(scheduleOption2);
+
+                ScheduleOption.createScheduleOptions(options);
+                List<ScheduleOption> s1 = ScheduleOption.findByTitle(t1);
+                // List<ScheduleOption> s2 = ScheduleOption.findByTitle(t2);
+
+                assertThat(s1).isNotNull();
+                assertThat(s1).isNotEmpty();
+                assertThat(s1.get(0).detail).isEqualTo(d1);
+//                 assertThat(s2).isNotNull();
+//                 assertThat(s2).isNotEmpty();
+//                 assertThat(s2.get(0).detail).isEqualTo(d2);
+
+
+                 Map optionMap = new HashMap();
+                 optionMap.put("scheduleoptions",options);
+//                 JsonNode node = Json.toJson(optionMap);
+//                 Result result = routeAndCall(fakeRequest("POST","/scheduleoptions"))
+//
+//                 event.put("title", "BBQ");
+//                 event.put("location", "Central Park Santa Clara");
+//                 event.put("detail", "Everyone should bring something");
+//                 // event.put("creatorid", "53bb83c444ae82a2e2a0549b");
+//                 String creatorId = Participant.findByEmail("keki@gmail.com").id;
+//                 event.put("creatorid", creatorId);
+//                 JsonNode node = Json.toJson(event);
+//                 Result result = routeAndCall(fakeRequest("POST","/events").withJsonBody(node));
+//                 assertThat(status(result)).isEqualTo(OK);
+//                 assertThat(contentType(result)).isEqualTo(CONTENT_TYPE);
+//                 JsonNode node2 = Json.parse(contentAsString(result));
+//                 String eventHostId = node2.get("createEventId").asText();
+//                 Event event2 = Event.findById(eventHostId);
+//                 assertThat(event2.title).isEqualTo("BBQ");
+//                 assertThat(event2.location).isEqualTo("Central Park Santa Clara");
+//                 assertThat(event2.detail).isEqualTo("Everyone should bring something");
+//                 assertThat(event2.creatorId).isEqualTo("53bb83c444ae82a2e2a0549b");
+
+//
+//                 Result result = route(fakeRequest("GET", "/events/creator/53bb83c444ae82a2e2a0549b"));
+//                 assertThat(status(result)).isEqualTo(OK);
+//                 assertThat(contentType(result)).isEqualTo(CONTENT_TYPE);
+//
+//                 JsonNode node2 = Json.parse(contentAsString(result));
+
+            }
+        });
+    }
+
+
+     @Test
+    public void testCreatScheduleOptionService() {
+         running(fakeApplication(), new Runnable() {
+             @Override
+             public void run() {
+
+                 String eventId = "53c447d044aefb07bed0d394";
+                 ScheduleOption scheduleOption1 = new ScheduleOption(eventId);
+                 String t1 = "Finishing in Half moon bay";
+                 scheduleOption1.title = t1;
+                 String d1 = "We will car pool to Half moon bay in the morning";
+                 scheduleOption1.detail = d1;
+                 scheduleOption1.scheduleTime = new Date();
+                 ScheduleOption scheduleOption2 = new ScheduleOption(eventId);
+                 String t2 = "Hiking in SF";
+                 scheduleOption2.title = t2;
+                 String d2 = "We will start from Our church, and go to SF golden Gate park";
+                 scheduleOption2.detail= d2;
+                 scheduleOption2.scheduleTime = new Date();
+                List<ScheduleOption> options  = new ArrayList<ScheduleOption>();
+                 options.add(scheduleOption1);
+                 options.add(scheduleOption2);
+
+                 ScheduleOption.createScheduleOptions(options);
+                 List<ScheduleOption> s1 = ScheduleOption.findByTitle(t1);
+                // List<ScheduleOption> s2 = ScheduleOption.findByTitle(t2);
+
+                 assertThat(s1).isNotNull();
+                 assertThat(s1).isNotEmpty();
+                 assertThat(s1.get(0).detail).isEqualTo(d1);
+//                 assertThat(s2).isNotNull();
+//                 assertThat(s2).isNotEmpty();
+//                 assertThat(s2.get(0).detail).isEqualTo(d2);
+
+
+//                 Map optionMap = new HashMap();
+//                 optionMap.put("scheduleoptions",options);
+//                 JsonNode node = Json.toJson(optionMap);
+//                 Result result = routeAndCall(fakeRequest("POST","/scheduleoptions"))
+//
+//                 event.put("title", "BBQ");
+//                 event.put("location", "Central Park Santa Clara");
+//                 event.put("detail", "Everyone should bring something");
+//                 // event.put("creatorid", "53bb83c444ae82a2e2a0549b");
+//                 String creatorId = Participant.findByEmail("keki@gmail.com").id;
+//                 event.put("creatorid", creatorId);
+//                 JsonNode node = Json.toJson(event);
+//                 Result result = routeAndCall(fakeRequest("POST","/events").withJsonBody(node));
+//                 assertThat(status(result)).isEqualTo(OK);
+//                 assertThat(contentType(result)).isEqualTo(CONTENT_TYPE);
+//                 JsonNode node2 = Json.parse(contentAsString(result));
+//                 String eventHostId = node2.get("createEventId").asText();
+//                 Event event2 = Event.findById(eventHostId);
+//                 assertThat(event2.title).isEqualTo("BBQ");
+//                 assertThat(event2.location).isEqualTo("Central Park Santa Clara");
+//                 assertThat(event2.detail).isEqualTo("Everyone should bring something");
+//                 assertThat(event2.creatorId).isEqualTo("53bb83c444ae82a2e2a0549b");
+
+//
+//                 Result result = route(fakeRequest("GET", "/events/creator/53bb83c444ae82a2e2a0549b"));
+//                 assertThat(status(result)).isEqualTo(OK);
+//                 assertThat(contentType(result)).isEqualTo(CONTENT_TYPE);
+//
+//                 JsonNode node2 = Json.parse(contentAsString(result));
+
+             }
+         });
+     }
 
     /**
      * Event Tests
@@ -89,7 +229,9 @@ private static final String CONTENT_TYPE = "application/json";
                 event.put("title", "BBQ");
                 event.put("location", "Central Park Santa Clara");
                 event.put("detail", "Everyone should bring something");
-                event.put("creatorid", "53bb83c444ae82a2e2a0549b");
+                // event.put("creatorid", "53bb83c444ae82a2e2a0549b");
+                String creatorId = Participant.findByEmail("keki@gmail.com").id;
+                event.put("creatorid", creatorId);
                 JsonNode node = Json.toJson(event);
                 Result result = routeAndCall(fakeRequest("POST","/events").withJsonBody(node));
                 assertThat(status(result)).isEqualTo(OK);
@@ -105,6 +247,53 @@ private static final String CONTENT_TYPE = "application/json";
         });
     }
 
+    @Test
+    public void testAddParticipantsNameToEvent(){
+        running(fakeApplication(),new Runnable(){
+
+            @Override
+            public void run() {
+                //
+                Logger.debug("Testing testAddParticipantsNameToEvent");
+                String eventId = "53c447d044aefb07bed0d394";
+                Event event3 = Event.findById(eventId);
+                event3.addParticipantNames(event3, Arrays.asList("JK","Yishu"));
+                Event updatedEvent = Event.findById(eventId);
+                assertThat(updatedEvent.participantsName).hasSize(2);
+                assertThat(updatedEvent.participantsName).contains("JK");
+                assertThat(updatedEvent.participantsName).contains("Yishu");
+
+            }
+        });
+    }
+
+    /**
+     * Test add already existed participants name to event,
+     * it's not supposed to update the event.
+     */
+    @Test
+    public void testAddExistingParticipantsNameToEvent(){
+        running(fakeApplication(),new Runnable(){
+
+            @Override
+            public void run() {
+                //
+                Logger.debug("Testing testAddParticipantsNameToEvent");
+                String eventId = "53c447d044aefb07bed0d394";
+                Event event3 = Event.findById(eventId);
+                event3.addParticipantNames(event3, Arrays.asList("JK","Yishu"));
+               //add it twice
+                event3.addParticipantNames(event3, Arrays.asList("JK","Yishu"));
+                Event updatedEvent = Event.findById(eventId);
+
+                //the result should be still hasSize(2)
+                assertThat(updatedEvent.participantsName).hasSize(2);
+                assertThat(updatedEvent.participantsName).contains("JK");
+                assertThat(updatedEvent.participantsName).contains("Yishu");
+
+            }
+        });
+    }
     /**
      * Comment Tests
      */
@@ -121,60 +310,60 @@ private static final String CONTENT_TYPE = "application/json";
 
 
     /**
-     * Event Host tests
+     * Participants
      */
     @Test
-    public void testCreateEvenHost() {
+    public void testCreateParticipant() {
         running(fakeApplication(), new Runnable() {
             @Override
             public void run() {
-                Map eventhost = new HashMap();
-                eventhost.put("hostname","JK");
-                eventhost.put("email","keki@gmail.com");
-                JsonNode node = Json.toJson(eventhost);
-                Result result = routeAndCall(fakeRequest("POST","/eventhosts").withJsonBody(node));
+                Map participant = new HashMap();
+                participant.put("name","Yishu");
+                participant.put("email","yishu@gmail.com");
+                JsonNode node = Json.toJson(participant);
+                Result result = routeAndCall(fakeRequest("POST","/participants").withJsonBody(node));
                 assertThat(status(result)).isEqualTo(OK);
                 assertThat(contentType(result)).isEqualTo(CONTENT_TYPE);
                 JsonNode node2 = Json.parse(contentAsString(result));
-                String eventHostId = node2.get("eventhostid").asText();
-                EventHost host = EventHost.findById(eventHostId);
-                assertThat(host.hostname).isEqualTo("JK");
-                assertThat(host.email).isEqualTo("keki@gmail.com");
+                String eventHostId = node2.get("participantid").asText();
+                Participant host = Participant.findById(eventHostId);
+                assertThat(host.name).isEqualTo("Yishu");
+                assertThat(host.email).isEqualTo("yishu@gmail.com");
             }
         });
     }
 
     @Test
-    public void testCreatexistingEmail() {
+    public void testCreatParticipantWithExistingEmail() {
         running(fakeApplication(), new Runnable() {
             @Override
             public void run() {
-                Map eventhost = new HashMap();
-                eventhost.put("hostname","change to JK from keki");
-                eventhost.put("email","keki@gmail.com");
-                JsonNode node = Json.toJson(eventhost);
-                Result result = routeAndCall(fakeRequest("POST","/eventhosts").withJsonBody(node));
+                Map participant = new HashMap();
+                participant.put("name","change to JK from keki");
+                participant.put("email","keki@gmail.com");
+                JsonNode node = Json.toJson(participant);
+                Result result = routeAndCall(fakeRequest("POST","/participants").withJsonBody(node));
                 System.out.println(result.toString());
                 assertThat(status(result)).isEqualTo(OK);
                 assertThat(contentType(result)).isEqualTo(CONTENT_TYPE);
                 JsonNode node2 = Json.parse(contentAsString(result));
-                String eventHostId = node2.get("eventhostid").asText();
-                EventHost host = EventHost.findById(eventHostId);
-                assertThat(host.hostname).isEqualTo("change to JK from keki");
+                String eventHostId = node2.get("participantid").asText();
+                Participant host = Participant.findById(eventHostId);
+                assertThat(host.name).isEqualTo("change to JK from keki");
                 assertThat(host.email).isEqualTo("keki@gmail.com");
             }
         });
     }
     @Test
-    public void testCreatEventHostWithNullEmail() {
+    public void testCreatParticipantWithNullEmail() {
         running(fakeApplication(), new Runnable() {
             @Override
             public void run() {
-                Map eventhost = new HashMap();
-                eventhost.put("hostname","change to JK from keki");
-              //  eventhost.put("email","@gmail.com");
-                JsonNode node = Json.toJson(eventhost);
-                Result result = routeAndCall(fakeRequest("POST","/eventhosts").withJsonBody(node));
+                Map participant = new HashMap();
+                participant.put("name","change to JK from keki");
+              //  participant.put("email","@gmail.com");
+                JsonNode node = Json.toJson(participant);
+                Result result = routeAndCall(fakeRequest("POST","/participants").withJsonBody(node));
                 System.out.println(result.toString());
                 assertThat(status(result)).isEqualTo(BAD_REQUEST);
                 assertThat(contentType(result)).isEqualTo("text/plain");
@@ -184,50 +373,50 @@ private static final String CONTENT_TYPE = "application/json";
 
 
     @Test
-    public void testRemoveEventHostById() {
+    public void testRemoveParticipantById() {
         running(fakeApplication(), new Runnable() {
             @Override
             public void run() {
-                //Create dummyEventHost before test deletion
-                Map eventhostDummy = new HashMap();
-                eventhostDummy.put("hostname","change to JK from keki");
-                eventhostDummy.put("email","keki@gmail.com");
-                JsonNode nodeDumy = Json.toJson(eventhostDummy);
-                Result resultDummy = routeAndCall(fakeRequest("POST","/eventhosts").withJsonBody(nodeDumy));
+             //   Create dummyParticipant before test deletion
+                Map participantDummy = new HashMap();
+                participantDummy.put("name","change to JK from keki");
+                participantDummy.put("email","keki23@gmail.com");
+                JsonNode nodeDumy = Json.toJson(participantDummy);
+                Result resultDummy = routeAndCall(fakeRequest("POST","/participants").withJsonBody(nodeDumy));
 
                 //Test the remove function
-                EventHost eventHost = EventHost.findByEmail("keki@gmail.com");
-                Map eventhost = new HashMap();
-                eventhost.put("evenhostid",eventHost.id);
-                JsonNode node = Json.toJson(eventhost);
-                Result result = routeAndCall(fakeRequest("POST","/eventhosts/remove").withJsonBody(node));
+                Participant participant = Participant.findByEmail("keki23@gmail.com");
+                Map participantMap = new HashMap();
+                participantMap.put("participantid", participant.id);
+                JsonNode node = Json.toJson(participantMap);
+                Result result = routeAndCall(fakeRequest("POST","/participants/remove").withJsonBody(node));
                 System.out.println(result.toString());
                 assertThat(status(result)).isEqualTo(OK);
-                EventHost eventHost2 = EventHost.findByEmail("keki@gmail.com");
+                Participant participant2 = Participant.findByEmail("keki23@gmail.com");
                 //assertThat(contentType(result)).isEqualTo(CONTENT_TYPE);
-                assertThat(eventHost2).isNull();
+                assertThat(participant2).isNull();
             }
         });
     }
 
     @Test
-    public void testRemoveEventHostByInvalidId() {
+    public void testRemoveParticipantByInvalidId() {
         running(fakeApplication(), new Runnable() {
             @Override
             public void run() {
-                //Create dummyEventHost before test deletion
-                Map eventhostDummy = new HashMap();
-                eventhostDummy.put("hostname","change to JK from keki");
-                eventhostDummy.put("email","keki@gmail.com");
-                JsonNode nodeDumy = Json.toJson(eventhostDummy);
-                Result resultDummy = routeAndCall(fakeRequest("POST","/eventhosts").withJsonBody(nodeDumy));
+                //Create dummyParticipant before test deletion
+                Map participantDummy = new HashMap();
+                participantDummy.put("name","change to JK from keki");
+                participantDummy.put("email","keki@gmail.com");
+                JsonNode nodeDumy = Json.toJson(participantDummy);
+                Result resultDummy = routeAndCall(fakeRequest("POST","/participants").withJsonBody(nodeDumy));
 
-                EventHost eventHost = EventHost.findByEmail("keki@gmail.com");
-                Map eventhost = new HashMap();
-                //    eventhost.put("evenhostid",eventHost.id);
-                eventhost.put("evenhostid","eventHost.id");
-                JsonNode node = Json.toJson(eventhost);
-                Result result = routeAndCall(fakeRequest("POST","/removeeventhostbyid").withJsonBody(node));
+                Participant participant = Participant.findByEmail("keki@gmail.com");
+                Map participantMap = new HashMap();
+                //    participant.put("participantid",participant.id);
+                participantMap.put("participantid","participant.id");
+                JsonNode node = Json.toJson(participantMap);
+                Result result = routeAndCall(fakeRequest("POST","/participants/remove").withJsonBody(node));
                 System.out.println(result.toString());
                 assertThat(status(result)).isEqualTo(BAD_REQUEST);
 

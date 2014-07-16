@@ -1,0 +1,37 @@
+ <form name="reviewForm" 
+      ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
+      <!-- NOTES! we did not define variable 'review' yet, but we can
+      start using it, just like the 'tab' variable we use previously -->
+      <!-- ng-modle binds the form element value to the property 
+        NOTES: It is two way binding!-->
+        <!-- two more ng-modle examples: 
+        <input ng-model="review.terms" type="checkbox" /> I agree to the terms
+        with Radio Buttons
+        what color would you like?
+        <input ng-model="review.color" type="radio" value="red" /> Red
+        <input ng-model="review.color" type="radio" value="blue" /> Blue
+        <input ng-model="review.color" type="radio" value="green" /> Green
+        -->
+
+      	<blockquote>
+      		<b>Stars: {{reviewCtrl.review.stars}}</b>
+      		{{reviewCtrl.review.body}}
+      		<cite>by: {{reviewCtrl.review.author}} on {{reviewCtrl.review.createdOn | date:'MM/dd/yyyy @ h:mma'}}</cite>
+      	</blockquote>
+      	<select ng-model="reviewCtrl.review.stars" class="form-control" ng-options="stars +' stars' for stars in [5,4,3,2,1]" title="Starts" required >
+        	<option value="">Rate the Product</option>
+      	</select></br>
+<!--       	<select ng-model="review.stars">
+      		<option value="1">1 start</option>
+      		<option value="2">2 start</option>
+      		<option value="3">3 start</option>
+      		<option value="4">4 start</option>
+      		<option value="5">5 start</option>
+      	</select> -->
+      	<textarea ng-model="reviewCtrl.review.body" required placeholder="write a short review of the product..."></textarea>
+      	<label>by:</label>
+      	<input ng-model="reviewCtrl.review.author" type="email" placeholder="email" required/>
+      	<!-- NOTE: Debugging code '$valid' is calling a build in Angular property 'valid' -->
+      	<div>reviewForm is {{reviewForm.$valid}}</div>
+      	<input type="submit" value="Submit" />
+      </form>

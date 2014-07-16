@@ -1,0 +1,4 @@
+{{product.name}}
+	<em class="pull-right"> {{product.price | currency }}</em>
+		<p>{{product.recipe | date:'MM/dd/yyyy @ h:mma'}}</p>
+	<img ng-src="{{product.images[gallery.current].full}}" ng-click="gallery.setCurrent(0)"></img>

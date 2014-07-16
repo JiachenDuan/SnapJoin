@@ -1,0 +1,65 @@
+[
+        {
+            "name": "Dodecahedron",
+            "price": 2.95,
+            "description": ". . .",
+            "canPurchase": true,
+            "soldOut": false,
+            "recipe": "1404862035883",
+            "images": [
+                {
+                    "full": "img/pic-01-full.png",
+                    "thumb": "img/pic-01-thumb.png"
+                },
+                {
+                    "full": "img/pic-02-full.png",
+                    "thumb": "img/pic-01-thumb.png"
+                }
+            ],
+            "reviews": [
+                {
+                    "stars": 5,
+                    "body": "I love this product!",
+                    "author": "joe@thomas.com",
+                    "createdOn": "1404862035883"
+                },
+                {
+                    "stars": 1,
+                    "body": "This product sucks",
+                    "author": "tim@hater.com",
+                    "createdOn": "1404862035883"
+                }
+            ]        // },
+        // {
+        //     "name": "Pentagonal Gem",
+        //     price: 5.95,
+        //     description: ". . .",
+        //     canPurchase: true,
+        //     soldOut: false,
+        //     recipe: "1404862239143",
+        //     images: [
+        //         {
+        //             full: "img/pic-01-full.png",
+        //             thumb: "img/pic-01-thumb.png"
+        //         },
+        //         {
+        //             full: "img/pic-02-full.png",
+        //             thumb: "img/pic-01-thumb.png"
+        //         }
+        //     ],
+        //     reviews: [
+        //         {
+        //             stars: 5,
+        //             body: "I love this product!",
+        //             author: "joe@thomas.com",
+        //             createdOn: 1404862035883
+        //         },
+        //         {
+        //             stars: 1,
+        //             body: "This product sucks",
+        //             author: "tim@hater.com",
+        //             createdOn: 1404862035883
+        //         }
+        //     ],
+        }
+    ]

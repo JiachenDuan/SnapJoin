@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!-- ng-app - attach the Application Module to the page -->
+<html ng-app="events">
+  <head>
+    <title>Show events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="css/app.css" rel="stylesheet" type="text/css" media="screen">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js" ></script>
+    <script type="text/javascript" src="js/events.js"></script>
+  </head>
+  <!-- ng-controller: attach a Controller function to the page -->
+  <body ng-controller="eventsController as eventCtrl">
+
+  <ul class="list-group" >
+	<li class="list-group-item" ng-repeat="event in eventCtrl.myevents " >
+	<events-title></events-title>
+<!-- 	{{event.id}} event id -->
+	</li>
+ </ul>
+
+
+  </body>
+</html>

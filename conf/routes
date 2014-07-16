@@ -14,8 +14,8 @@ POST        /events/close                                             controller
 GET         /events/creator/:id                                       controllers.EventController.eventsByCreator(id:String)
 #Comment
 #EventHost
-POST        /eventhosts                                               controllers.EventController.createEventHost()
-POST        /eventhosts/remove                                        controllers.EventController.removeEventHostById()
+POST        /participants                                               controllers.EventController.createParticipant()
+POST        /participants/remove                                        controllers.EventController.removeParticipantById()
 
 #Task
 GET         /tasks                                                    controllers.Application.tasks()
